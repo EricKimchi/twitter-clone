@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import React from 'react'
 import {BiHomeCircle, BiUser} from 'react-icons/bi'
-import {BsBell, BsBookmark, BsTwitter, BsEnvelope, BsThreeDots, BsChat, BsDot} from 'react-icons/bs'
+import {BsBell, BsBookmark, BsTwitter, BsEnvelope, BsThreeDots, BsChat, BsDot, BsSearch} from 'react-icons/bs'
 import {HiOutlineHashtag} from 'react-icons/hi'
 import LeftSidebar from './components/LeftSidebar'
 import MainComponent from './components/MainComponent'
+import RightTrending from './components/RightTrending'
 
 const NAVIGATION_ICONS = [
   {
@@ -41,13 +42,11 @@ const NAVIGATION_ICONS = [
 const Home = () => {
   return (
     <div className='w-full h-full flex justify-center items-center relative bg-black'>
-      <div className='max-w-screen-xl w-full h-full flex relative'>
+      <div className='max-w-[70vw] w-full h-full flex relative'>
         {/* left sidebar for navigation/header */}
         <LeftSidebar/>
         <MainComponent/>
-        <section className='fixed flex flex-col space-y-4'>
-
-        </section>
+        <RightTrending/>
       </div>
     </div>
   )
