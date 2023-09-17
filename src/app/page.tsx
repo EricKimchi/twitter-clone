@@ -3,9 +3,9 @@ import React from 'react'
 import {BiHomeCircle, BiUser} from 'react-icons/bi'
 import {BsBell, BsBookmark, BsTwitter, BsEnvelope, BsThreeDots, BsChat, BsDot, BsSearch} from 'react-icons/bs'
 import {HiOutlineHashtag} from 'react-icons/hi'
-import LeftSidebar from './components/LeftSidebar'
-import MainComponent from './components/MainComponent'
-import RightTrending from './components/RightTrending'
+import LeftSidebar from '../components/LeftSidebar'
+import MainComponent from '../components/MainComponent'
+import RightTrending from '../components/RightTrending'
 
 const NAVIGATION_ICONS = [
   {
