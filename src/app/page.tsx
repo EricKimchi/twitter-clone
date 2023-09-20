@@ -4,7 +4,7 @@ import LeftSidebar from '../components/LeftSidebar'
 import MainComponent from '../components/MainComponent'
 import RightTrending from '../components/RightTrending'
 
-export const revalidate = 0;
+//export const revalidate = 0;
 
 {/*Homepage has a fixed width with 3 columns: a sidebar, the home tweet column, and a recommendation section*/}
 const Home = async () => {

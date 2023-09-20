@@ -25,7 +25,7 @@ const ComposeTweetForm = ({ serverAction }: ComposeTweetFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmitTweet} className="flex flex-col w-full h-full">
+    <form action={handleSubmitTweet} className="flex flex-col w-full h-full">
       <input
         type="text"
         name="tweet"
