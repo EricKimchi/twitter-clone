@@ -9,7 +9,7 @@ import type { Database } from "@/lib/supabase.types";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-// import { Toaster, toast } from "sonner";
+import { Toaster, toast } from "sonner";
 
 type SupabaseContext = {
   supabase: SupabaseClient<Database>;
@@ -56,7 +56,7 @@ export default function SupabaseProvider({
   return (
     <Context.Provider value={{ supabase }}>
       <>
-        {/*<Toaster />*/}
+        <Toaster/>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent className="bg-black p-6">
             <h3 className="text-lg my-1">Please sign in to continue</h3>
@@ -72,11 +72,11 @@ export default function SupabaseProvider({
                   .select()
                   .eq("username", username.trim());
 
-                {/*if (data && data?.length > 0) {
+                if (data && data?.length > 0) {
                   return toast.error(
                     "username already exists, please use another"
                   );
-                }*/}
+                }
 
                 const { data: signUpData, error: signUpError } =
                   await supabase.auth.signInWithOtp({
@@ -89,10 +89,10 @@ export default function SupabaseProvider({
                     },
                   });
 
-                {/*if (signUpError) {
+                if (signUpError) {
                   return toast.error(signUpError.message);
                 }
-                toast.success("magic link sent successfully");*/}
+                toast.success("magic link sent successfully");
                 setIsLoading(false);
               }}
             >

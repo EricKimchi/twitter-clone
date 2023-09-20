@@ -3,7 +3,7 @@ import { BsSearch } from 'react-icons/bs'
 
 const RightTrending = () => {
   return (
-    <section className='mt-2 w-[25%] sticky top-2 overflow-auto items-stretch flex flex-col px-6 ml-auto h-screen'>
+    <section className='mt-2 w-[25%] sticky top-2 overflow-auto items-stretch xl:flex flex-col px-6 ml-auto h-screen hidden'>
         <div>
             <div className='relative w-full h-full group'>
             <input 

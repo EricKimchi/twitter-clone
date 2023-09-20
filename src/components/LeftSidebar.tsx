@@ -37,7 +37,7 @@ const NAVIGATION_ICONS = [
 
 const LeftSidebar = () => {
   return (
-    <section className='sticky top-0 w-[23%] flex flex-col items-stretch h-screen'>
+    <section className='sticky top-0 w-[23%] xl:flex flex-col items-stretch h-screen hidden'>
           <div className='flex flex-col items-stretch h-full space-y-4 mt-4'>
           {NAVIGATION_ICONS.map((item)=>(
             <Link className=' hover:bg-white/10 text-2xl transition duration-200 flex items-center justify-start w-fit space-x-4 rounded-full py-2 px-6' href={`/${item.title.toLowerCase()}`} key={item.title}>
