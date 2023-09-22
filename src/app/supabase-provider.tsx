@@ -66,11 +66,14 @@ export default function SupabaseProvider({
 
                 setIsLoading(true);
 
-                // first check if the username exists or not
+                //first check if the username exists or not
                 const { data, error } = await supabase
                   .from("profiles")
                   .select()
                   .eq("username", username.trim());
+
+                
+                
 
                 if (data && data?.length > 0) {
                   return toast.error(
@@ -89,8 +92,20 @@ export default function SupabaseProvider({
                     },
                   });
 
+
                 if (signUpError) {
+                  console.log("ERRRORRRR")
                   return toast.error(signUpError.message);
+                } else {
+                  const { error } = await supabase
+                    .from('profiles')
+                    .insert({ id: "2748bdc4-7ae5-4ca3-88a9-00e412fc8d65", 
+                      username: username.trim()});
+                    if (error) {
+                      console.log(error.message);
+                    } else {
+                      console.log("all gucci in the hucci");
+                    }
                 }
                 toast.success("magic link sent successfully");
                 setIsLoading(false);

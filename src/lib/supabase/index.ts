@@ -5,5 +5,8 @@ const supabaseSecretKey = process.env.SUPABASE_SECRET_KEY;
 
 export const supabaseServer = new SupabaseClient(
   supabaseUrl as string,
-  supabaseSecretKey as string
+  supabaseSecretKey as string,
+  {
+    auth: { persistSession: false },
+  }
 );

@@ -1,4 +1,4 @@
-import { InferModel, relations } from "drizzle-orm";
+import { InferSelectModel, InferInsertModel, relations } from "drizzle-orm";
 import {
   pgTable,
   text,
@@ -20,7 +20,7 @@ export const profiles = pgTable("profiles", {
   avatarUrl: text("avatar_url"),
 });
 
-export type Profile = InferModel<typeof profiles>;
+export type Profile = InferSelectModel<typeof profiles>;
 
 export const profilesRelations = relations(profiles, ({ many }) => ({
   tweets: many(tweets),
@@ -41,7 +41,7 @@ export const tweets = pgTable("tweets", {
   replyId: uuid("reply_id").references((): AnyPgColumn => tweets.id),
 });
 
-export type Tweet = InferModel<typeof tweets>;
+export type Tweet = InferSelectModel<typeof tweets>;
 
 export const tweetsReplies = alias(tweets, "tweets_replies");
 
@@ -116,7 +116,7 @@ export const likes = pgTable(
   })
 );
 
-export type Like = InferModel<typeof likes>;
+export type Like = InferInsertModel<typeof likes>;
 
 export const likesRelations = relations(likes, ({ one }) => ({
   profile: one(profiles, {

@@ -25,31 +25,31 @@ const ComposeTweet = () => {
     if (!supabaseUrl || !supabaseSecretKey)
       return { error: { message: "supabase credentials are not provided!" } };
 
-    const supabaseServer = new SupabaseClient(supabaseUrl, supabaseSecretKey);
+    const supabaseServer = new SupabaseClient(
+      supabaseUrl, 
+      supabaseSecretKey,
+      { 
+        auth: { persistSession: false },
+      }
+      );
 
     const { data: userData, error: userError } =
       await supabaseClient.auth.getUser();
 
     if (userError) return;
 
-    let err = "";
-
-    const res = await db
-      .insert(tweets)
-      .values({
+    console.log(tweet.toString());
+    const {data, error} = await supabaseServer
+      .from("tweets")
+      .insert({
         text: tweet.toString(),
         id: randomUUID(),
-        profileId: userData.user.id,
-      })
-      .returning()
-      .catch((error: any) => {
-        console.log(error);
-        err = "something wrong with server";
+        profile_id: userData.user.id,
       });
 
     revalidatePath("/");
 
-    return { data: res, error: err };
+    return { data: data, error: error };
   }
 
   return <ComposeTweetForm serverAction={submitTweet} />;
