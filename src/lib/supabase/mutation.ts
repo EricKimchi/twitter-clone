@@ -42,7 +42,7 @@ export const unlikeTweet = async ({
     .eq("user_id", userId);
 
   revalidatePath("/");
-  console.log({ data, error });
+  //console.log({ data, error });
 };
 
 export const reply = async ({

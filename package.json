@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "introspect": "drizzle-kit introspect:pg",
+    "generate": "drizzle-kit generate:pg",
+    "migrate": "npx bun run src/lib/db/migrate.ts"
   },
   "dependencies": {
     "@radix-ui/react-avatar": "^1.0.3",
@@ -22,6 +25,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "dayjs": "^1.11.10",
+    "drizzle-kit": "^0.19.13",
     "drizzle-orm": "^0.28.6",
     "eslint": "8.48.0",
     "eslint-config-next": "13.4.19",
