@@ -1,7 +1,7 @@
 "use server";
 
 import { randomUUID } from "crypto";
-import { supabaseServer } from ".";
+import { supabaseServer } from "./index";
 import { revalidatePath } from "next/cache";
 import { db } from "../db";
 import { likes, profiles, replies, tweets } from "../db/schema";
@@ -14,15 +14,26 @@ export const likeTweet = async ({
   tweetId: string;
   userId: string;
 }) => {
-  await db
-    .insert(likes)
-    .values({
-      tweetId,
-      userId,
-    })
-    .catch((err) => {
-      console.log(err);
+  // await db
+  //   .insert(likes)
+  //   .values({
+  //     tweetId,
+  //     userId,
+  //   })
+  //   .catch((err) => {
+  //     console.log(err);
+  //   });
+  try {
+    const {data, error} = await supabaseServer
+    .from("likes")
+    .insert({
+      id: userId,
+      user_id: userId,
+      tweet_id: tweetId
     });
+  } catch (error) {
+    console.log(error)
+  }
   revalidatePath("/");
 };
 
@@ -75,10 +86,10 @@ export const saveNewAvatar = async ({
 }) => {
   // check if the user setting the avatar is the actual owner
 
-  await db
-    .update(profiles)
-    .set({
-      avatarUrl: publicUrl,
-    })
-    .where(eq(profiles.id, profileId));
+  // await db
+  //   .update(profiles)
+  //   .set({
+  //     avatarUrl: publicUrl,
+  //   })
+  //   .where(eq(profiles.id, profileId));
 };
