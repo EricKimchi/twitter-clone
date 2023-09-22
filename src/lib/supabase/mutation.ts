@@ -14,20 +14,11 @@ export const likeTweet = async ({
   tweetId: string;
   userId: string;
 }) => {
-  // await db
-  //   .insert(likes)
-  //   .values({
-  //     tweetId,
-  //     userId,
-  //   })
-  //   .catch((err) => {
-  //     console.log(err);
-  //   });
   try {
     const {data, error} = await supabaseServer
     .from("likes")
     .insert({
-      id: userId,
+      id: randomUUID(),
       user_id: userId,
       tweet_id: tweetId
     });

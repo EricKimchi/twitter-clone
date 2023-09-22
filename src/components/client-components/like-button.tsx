@@ -32,12 +32,12 @@ const LikeButton = ({
               startTransition(() =>
                 {if (isUserHasLiked) {
                     unlikeTweet({
-                      tweetId,
+                      tweetId: tweetId,
                       userId: user.id,
                     })
                 } else {
                     likeTweet({
-                        tweetId,
+                        tweetId: tweetId,
                         userId: user.id,
                         })
                 }}
