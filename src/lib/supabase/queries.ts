@@ -2,7 +2,7 @@
 
 import { Database } from "../supabase.types";
 import { supabaseServer } from ".";
-import { db } from "../db";
+import { db, pool } from "../db";
 import {
   Like,
   Profile,
@@ -21,6 +21,30 @@ export type TweetType = Database["public"]["Tables"]["tweets"]["Row"] & {
   >;
 };
 
+const queryWithCurrentUser = `
+    SELECT tweets.*, profiles.username, profiles.full_name, COUNT(likes.id) AS likes_count,
+      EXISTS (
+        SELECT 1
+        FROM likes
+        WHERE likes.tweet_id = tweets.id
+        AND likes.user_id = $1
+      ) AS user_has_liked
+      FROM tweets
+      LEFT JOIN likes ON tweets.id = likes.tweet_id
+      JOIN profiles ON tweets.profile_id = profiles.id
+      GROUP BY tweets.id, profiles.username, profiles.full_name
+      ORDER BY tweets.created_at DESC;
+`;
+
+const queryWithoutCurrentUser = `
+    SELECT tweets.*, profiles.username, profiles.full_name, COUNT(likes.id) AS likes_count,
+      FROM tweets
+      LEFT JOIN likes ON tweets.id = likes.tweet_id
+      JOIN profiles ON tweets.profile_id = profiles.id
+      GROUP BY tweets.id, profiles.username, profiles.full_name
+      ORDER BY tweets.created_at DESC;
+`;
+
 export const getTweets = async ({
   currentUserID,
   getSingleTweetId,
@@ -36,7 +60,19 @@ export const getTweets = async ({
   replyId?: string;
   profileUsername?: string;
 }) => {
+
+  let query = queryWithoutCurrentUser;
+  if (currentUserID) {
+    query = queryWithCurrentUser;
+  }
   try {
+    const res = await pool.query(query, [currentUserID]);
+    return {data: res.rows}
+  } catch (error) {
+    console.log(error)
+  }
+
+/*  try {
     let query = db
       .select({
         tweets,
@@ -147,7 +183,7 @@ export const getTweets = async ({
     console.log(error);
     // return { error: "something wrong with querying the db" };
   }
-};
+*/};
 
 export const getLikesCount = async (tweetId: string) => {
   const res = await supabaseServer

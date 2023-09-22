@@ -14,7 +14,7 @@ const MainComponent = async () => {
     await supabaseClient.auth.getUser();
   
   const res = await getTweets({ currentUserID: userData.user?.id });
-
+  //console.log(res)
   return (
     <main className='sticky top-0 flex h-full min-h-screen flex-col border-l-[0.5px] border-r-[0.5px] border-gray-600'>
       <h1 className='text-xl font-bold p-6 backdrop-blur bg-black/10 sticky top-0'>Home</h1>
@@ -23,7 +23,7 @@ const MainComponent = async () => {
         <ComposeTweet/>
       </div>
       <div className='w-full'>
-        {res &&
+        {/*res &&
           res.map(({ likes, tweet, profile, hasLiked, replies }) => {
             return (
               <Tweet
@@ -42,7 +42,35 @@ const MainComponent = async () => {
                 repliesCount={replies.length}
               />
             );
-          })}
+              })*/}
+        {res &&
+        res.data.map((tweet:any) => (
+          <Tweet
+            key={tweet.id}
+            tweet={
+              {tweetDetails:{
+                replyId: tweet.id,
+                id: tweet.id,
+                text: tweet.text,
+                updatedAt: tweet.updated_at,
+                createdAt: tweet.created_at,
+                profileId: tweet.profile_id,
+                isReply: false,
+            },
+            userProfile:{
+              id: tweet.id,
+              updatedAt: tweet.updated_at,
+              createdAt: tweet.created_at,
+              username: tweet.username,
+              fullName: tweet.full_name
+            }
+          }}
+            currentUserId={userData.user?.id}
+            likesCount={tweet.likes_count}
+            hasLiked={tweet.user_has_liked}
+            repliesCount={0}
+          />
+        ))}
       </div>
     </main>
   );

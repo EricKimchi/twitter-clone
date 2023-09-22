@@ -40,11 +40,11 @@ const Tweet = ({
     <>
       <div className="border-b-[0.5px]  border-gray-600 p-2 flex space-x-4 w-full">
         <div>
-          <ProfileAvatar
+          {/*<ProfileAvatar
             username={tweet.userProfile.username}
             avatarUrl={tweet.userProfile.avatarUrl}
             isOnTimeline={true}
-          />
+          />*/}
         </div>
         <div className="flex flex-col w-full">
           <div className="flex items-center w-full justify-between">
@@ -82,7 +82,7 @@ const Tweet = ({
               tweetId={tweet.tweetDetails.id}
               likesCount={likesCount}
               isUserHasLiked={hasLiked}
-            />
+          />
             <div className="rounded-full hover:bg-white/10 transition duration-200 p-3 cursor-pointer">
               <IoStatsChart />
             </div>
