@@ -23,7 +23,7 @@ const MainComponent = async () => {
         <ComposeTweet/>
       </div>
       <div className='w-full'>
-        {/*{res &&
+        {res &&
           res.map(({ likes, tweet, profile, hasLiked, replies }) => {
             return (
               <Tweet
@@ -42,7 +42,7 @@ const MainComponent = async () => {
                 repliesCount={replies.length}
               />
             );
-          })}*/}
+          })}
       </div>
     </main>
   );
