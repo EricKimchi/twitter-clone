@@ -94,13 +94,16 @@ export default function SupabaseProvider({
 
 
                 if (signUpError) {
-                  console.log("ERRRORRRR")
+                  console.log(signUpError.message)
                   return toast.error(signUpError.message);
                 } else {
                   const { error } = await supabase
                     .from('profiles')
-                    .insert({ id: "2748bdc4-7ae5-4ca3-88a9-00e412fc8d65", 
-                      username: username.trim()});
+                    .insert({ 
+                      id: "2748bdc4-7ae5-4ca3-88a9-00e412fc8d65", 
+                      username: username.trim(),
+                      full_name: fullName.trim()
+                    });
                     if (error) {
                       console.log(error.message);
                     } else {
