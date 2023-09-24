@@ -55,7 +55,7 @@ const MainComponent = async () => {
                 updatedAt: tweet.updated_at,
                 createdAt: tweet.created_at,
                 profileId: tweet.profile_id,
-                isReply: false,
+                isReply: tweet.is_reply,
             },
             userProfile:{
               id: tweet.id,

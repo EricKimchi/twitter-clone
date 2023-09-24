@@ -6,7 +6,6 @@ import { SupabaseClient } from "@supabase/supabase-js";
 
 import { revalidatePath } from "next/cache";
 import ComposeTweetForm from "../client-components/compose-tweet-form";
-import { db } from "@/lib/db";
 import { tweets } from "@/lib/db/schema";
 
 const ComposeTweet = () => {
@@ -45,6 +44,7 @@ const ComposeTweet = () => {
         text: tweet.toString(),
         id: randomUUID(),
         profile_id: userData.user.id,
+        is_reply: false,
       });
 
     revalidatePath("/");

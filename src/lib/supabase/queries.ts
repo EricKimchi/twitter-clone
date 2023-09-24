@@ -32,6 +32,7 @@ const queryWithCurrentUser = `
       FROM tweets
       LEFT JOIN likes ON tweets.id = likes.tweet_id
       JOIN profiles ON tweets.profile_id = profiles.id
+      WHERE tweets.is_reply = FALSE
       GROUP BY tweets.id, profiles.username, profiles.full_name
       ORDER BY tweets.created_at DESC;
 `;
@@ -41,8 +42,25 @@ const queryWithoutCurrentUser = `
       FROM tweets
       LEFT JOIN likes ON tweets.id = likes.tweet_id
       JOIN profiles ON tweets.profile_id = profiles.id
+      WHERE tweets.is_reply = FALSE
       GROUP BY tweets.id, profiles.username, profiles.full_name
       ORDER BY tweets.created_at DESC;
+`;
+
+const querySingleTweet = `
+    SELECT tweets.*, profiles.username, profiles.full_name, COUNT(likes.id) AS likes_count,
+    EXISTS (
+      SELECT 1
+      FROM likes
+      WHERE likes.tweet_id = tweets.id
+      AND likes.user_id = $1
+    ) AS user_has_liked
+    FROM tweets
+    LEFT JOIN likes ON tweets.id = likes.tweet_id
+    JOIN profiles ON tweets.profile_id = profiles.id
+    WHERE tweets.id = $2
+    GROUP BY tweets.id, profiles.username, profiles.full_name
+    ORDER BY tweets.created_at DESC;
 `;
 
 export const getTweets = async ({
@@ -64,14 +82,25 @@ export const getTweets = async ({
   let query = queryWithoutCurrentUser;
   if (currentUserID) {
     query = queryWithCurrentUser;
-  }
-  try {
-    const res = await pool.query(query, [currentUserID]);
-    return {data: res.rows}
-  } catch (error) {
-    console.log(error)
+    if (getSingleTweetId) {
+      query = querySingleTweet;
+      try {
+        const res = await pool.query(query, [currentUserID, getSingleTweetId]);
+        return {data: res.rows}
+      } catch (error) {
+        console.log(error)
+      }
+    } else {
+      try {
+        const res = await pool.query(query, [currentUserID]);
+        return {data: res.rows}
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
 
+  // DRIZZLE-ORM
 /*  try {
     let query = db
       .select({

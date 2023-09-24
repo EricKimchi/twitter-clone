@@ -58,12 +58,25 @@ export const reply = async ({
 
   if (replyText === "") return;
 
-  await db.insert(tweets).values({
+  // const { data, error } = await supabaseServer
+  //   .from("tweets")
+  //   .insert({
+  //     id:randomUUID(),
+  //     text: replyText,
+  //     profile_id: userId,
+  //     is_reply: true,
+  //     reply_id: tweetId,
+  //   });
+  const { data, error } = await supabaseServer
+  .from("replies")
+  .insert({
+    id:randomUUID(),
     text: replyText,
-    profileId: userId,
-    isReply: true,
-    replyId: tweetId,
+    user_id: userId,
+    tweet_id: tweetId,
   });
+    console.log(error)
+
 
   revalidatePath(`/tweet/[id]`);
 };
