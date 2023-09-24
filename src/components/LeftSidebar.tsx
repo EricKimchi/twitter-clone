@@ -3,6 +3,8 @@ import Link from 'next/link'
 import {BiHomeCircle, BiUser} from 'react-icons/bi'
 import {BsBell, BsBookmark, BsTwitter, BsEnvelope, BsThreeDots} from 'react-icons/bs'
 import {HiOutlineHashtag} from 'react-icons/hi'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
 const NAVIGATION_ICONS = [
   {
@@ -35,20 +37,35 @@ const NAVIGATION_ICONS = [
   }
 ]
 
-const LeftSidebar = () => {
+const LeftSidebar = async () => {
+  const supabaseClient = createServerComponentClient({
+    cookies,
+  });
+
+  const { data: userData, error: userError } =
+    await supabaseClient.auth.getUser();
+
   return (
     <section className='sticky top-0 w-[23%] xl:flex flex-col items-stretch h-screen hidden'>
           <div className='flex flex-col items-stretch h-full space-y-4 mt-4'>
-          {NAVIGATION_ICONS.map((item)=>(
-            <Link className=' hover:bg-white/10 text-2xl transition duration-200 flex items-center justify-start w-fit space-x-4 rounded-full py-2 px-6' href={`/${item.title.toLowerCase()}`} key={item.title}>
-              <div>
-                <item.icon/>
-              </div>
-              <div>
-                {item.title !== 'Twitter' && <div>{item.title}</div>}
-              </div>
-            </Link>
-            ))}
+          {NAVIGATION_ICONS.map((item) => (
+          <Link
+            className="hover:bg-white/10 text-2xl transition duration-200 flex items-center justify-start w-fit space-x-4 rounded-3xl py-2 px-6"
+            href={
+              item.title.toLocaleLowerCase() === "home"
+                ? "/"
+                : item.title.toLocaleLowerCase() === "profile"
+                ? userData.user?.user_metadata.username || "#"
+                : `/${item.title.toLowerCase()}`
+            }
+            key={item.title}
+          >
+            <div>
+              <item.icon />
+            </div>
+            {item.title !== "Twitter" && <div>{item.title}</div>}
+          </Link>
+        ))}
             <button className='rounded-full bg-primary m-4 px-4 py-2 text-xl text-center hover:bg-opacity-70 transition duration-200'>
               Tweet
             </button>
