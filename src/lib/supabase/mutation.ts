@@ -58,23 +58,23 @@ export const reply = async ({
 
   if (replyText === "") return;
 
-  // const { data, error } = await supabaseServer
-  //   .from("tweets")
-  //   .insert({
-  //     id:randomUUID(),
-  //     text: replyText,
-  //     profile_id: userId,
-  //     is_reply: true,
-  //     reply_id: tweetId,
-  //   });
   const { data, error } = await supabaseServer
-  .from("replies")
-  .insert({
-    id:randomUUID(),
-    text: replyText,
-    user_id: userId,
-    tweet_id: tweetId,
-  });
+    .from("tweets")
+    .insert({
+      id:randomUUID(),
+      text: replyText,
+      profile_id: userId,
+      is_reply: true,
+      reply_id: tweetId,
+    });
+  // const { data, error } = await supabaseServer
+  // .from("replies")
+  // .insert({
+  //   id:randomUUID(),
+  //   text: replyText,
+  //   user_id: userId,
+  //   tweet_id: tweetId,
+  // });
     console.log(error)
 
 

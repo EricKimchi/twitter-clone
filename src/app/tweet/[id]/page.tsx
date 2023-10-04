@@ -26,15 +26,15 @@ const TweetPage = async ({ params }: { params: { id: string } }) => {
     redirect("/");
   }
 
-//   const repliesRes = await getTweets({
-//     currentUserID: userData.user?.id,
-//     orderBy: true,
-//     replyId: tweet.tweet.id,
-//   });
+  const repliesRes = await getTweets({
+    currentUserID: userData.user?.id,
+    orderBy: true,
+    replyId: tweet.data.at(0).id,
+  });
 
   return (
     <main className="flex w-full h-full min-h-screen flex-col border-l-[0.5px] border-r-[0.5px] border-gray-600">
-      {tweet &&
+      {tweet ?
         tweet.data.map((tweet:any) => (
           <Tweet
             key={tweet.id}
@@ -61,7 +61,9 @@ const TweetPage = async ({ params }: { params: { id: string } }) => {
             hasLiked={tweet.user_has_liked}
             repliesCount={0}
           />
-        ))}
+        )) : (
+          <div>no tweet found</div>
+        )}
       
       {/* {tweet ? (
         <Tweet
@@ -77,22 +79,36 @@ const TweetPage = async ({ params }: { params: { id: string } }) => {
       ) : (
         <div>no tweet found</div>
       )} */}
-      {/* {repliesRes &&
-        repliesRes.map(({ hasLiked, likes, profile, replies, tweet }) => {
+      {repliesRes &&
+        repliesRes.data.map((tweet:any) => {
           return (
             <Tweet
-              key={tweet.id}
-              hasLiked={hasLiked}
-              likesCount={likes.length}
-              tweet={{
-                tweetDetails: tweet,
-                userProfile: profile,
-              }}
-              repliesCount={replies.length}
-              currentUserId={userData.user?.id}
-            />
+            key={tweet.id}
+            tweet={
+              {tweetDetails:{
+                replyId: tweet.id,
+                id: tweet.id,
+                text: tweet.text,
+                updatedAt: tweet.updated_at,
+                createdAt: tweet.created_at,
+                profileId: tweet.profile_id,
+                isReply: tweet.is_reply,
+            },
+            userProfile:{
+              id: tweet.id,
+              updatedAt: tweet.updated_at,
+              createdAt: tweet.created_at,
+              username: tweet.username,
+              fullName: tweet.full_name
+            }
+          }}
+            currentUserId={userData.user?.id}
+            likesCount={tweet.likes_count}
+            hasLiked={tweet.user_has_liked}
+            repliesCount={0}
+          />
           );
-        })} */}
+        })} 
     </main>
   );
 };

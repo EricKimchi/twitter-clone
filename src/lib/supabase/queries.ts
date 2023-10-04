@@ -63,6 +63,23 @@ const querySingleTweet = `
     ORDER BY tweets.created_at DESC;
 `;
 
+const queryReplyTweets = `
+    SELECT tweets.*, profiles.username, profiles.full_name, COUNT(likes.id) AS likes_count,
+    EXISTS (
+      SELECT 1
+      FROM likes
+      WHERE likes.tweet_id = tweets.id
+      AND likes.user_id = $1
+    ) AS user_has_liked
+    FROM tweets
+    LEFT JOIN likes ON tweets.id = likes.tweet_id
+    JOIN profiles ON tweets.profile_id = profiles.id
+    WHERE tweets.is_reply = TRUE
+    AND tweets.reply_id = $2
+    GROUP BY tweets.id, profiles.username, profiles.full_name
+    ORDER BY tweets.created_at DESC;
+`;
+
 export const getTweets = async ({
   currentUserID,
   getSingleTweetId,
@@ -80,12 +97,22 @@ export const getTweets = async ({
 }) => {
 
   let query = queryWithoutCurrentUser;
+  // TODO: Clean up database queries
   if (currentUserID) {
     query = queryWithCurrentUser;
     if (getSingleTweetId) {
       query = querySingleTweet;
       try {
         const res = await pool.query(query, [currentUserID, getSingleTweetId]);
+        
+        return {data: res.rows}
+      } catch (error) {
+        console.log(error)
+      }
+    } else if (replyId) {
+      query = queryReplyTweets;
+      try {
+        const res = await pool.query(query, [currentUserID, replyId]);
         return {data: res.rows}
       } catch (error) {
         console.log(error)
@@ -211,8 +238,8 @@ export const getTweets = async ({
   } catch (error) {
     console.log(error);
     // return { error: "something wrong with querying the db" };
-  }
-*/};
+  }*/
+};
 
 export const getLikesCount = async (tweetId: string) => {
   const res = await supabaseServer
